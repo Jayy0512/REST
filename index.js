@@ -14,14 +14,17 @@ app.use(express.static(path.join(__dirname, "public"))); // join main dir to pub
 let posts = [
   // If we make it const, then we won't be able to delete in future
   {
+    id: "1a", // for the searching post by it's id
     username: "Jayy",
     content: "I love tech",
   },
   {
+    id: "2b",
     username: "Yash",
     content: "I love Chemistry",
   },
   {
+    id: "3c",
     username: "Vedant",
     content: "I love game",
   },
@@ -43,6 +46,12 @@ app.post("/posts", (req, res) => {
   // console.log(req.body);
   // res.send("Done!");
   res.redirect("/posts"); // When we will press submit button, it will redirect us to /posts path back
+});
+
+app.get("/posts/:id", (req, res) => {
+  let { id } = req.params;
+  let post = posts.find((p) => id === p.id); // finding post from the posts based on id
+  res.render("show.ejs", { post });
 });
 
 app.listen(port, () => {
