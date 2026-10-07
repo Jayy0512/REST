@@ -51,6 +51,9 @@ app.post("/posts", (req, res) => {
 app.get("/posts/:id", (req, res) => {
   let { id } = req.params;
   let post = posts.find((p) => id === p.id); // finding post from the posts based on id
+  if (!post) {
+    return res.status(404).send("Post not found");
+  }
   res.render("show.ejs", { post });
 });
 
