@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Post</title>
+  </head>
+  <body>
+    <h2>Username: @<%=post.username%></h2>
+    <h3>Post id: <%=post.id%></h3>
+    <form method="post" action="/posts/<%=post.id%>?_method=patch">
+      <!-- We can't send any of the request from html except get and post -->
+      <!-- That's why we install method-override -->
+      <textarea name="content" id="" rows="10" cols="35"><%=post.content%></textarea>
+      <button>Submit</button>
+    </form>
+  </body>
+</html>

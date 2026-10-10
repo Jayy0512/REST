@@ -3,10 +3,13 @@ const app = express();
 const port = 8080;
 const path = require("path"); // require path module to join paths
 const { v4: uuidv4 } = require("uuid"); // required uuid from express module
+const methodOverride = require("method-override"); // requires method-override
 
 // uuidv4(); // ⇨ 'b18794e8-5d0d-417c-b361-ba38e78411b4'
 
 app.use(express.urlencoded({ extended: true })); // to parse data which are got through post req
+app.use(methodOverride('_method'));
+// override with POST having ?_method=DELETE/POST
 
 app.set("view engine", "ejs"); // set view engine to views
 app.set("views", path.join(__dirname, "views")); // join main dir to views
@@ -70,7 +73,23 @@ app.patch("/posts/:id", (req, res) => {
   let post = posts.find((p) => id === p.id); // finding post from the posts based on id
   post.content = newContent; // set existing content to new content
   console.log(post);
-  res.send("patch request is working");
+  // res.send("patch request is working");
+  res.redirect("/posts");
+})
+
+app.get("/posts/:id/edit", (req, res) => {
+  let { id } = req.params;
+  let post = posts.find((p) => id === p.id);
+  res.render("edit.ejs", { post });
+})
+
+// Delete Post:
+app.delete("/posts/:id", (req, res) => {
+  let { id } = req.params;
+  posts = posts.filter((p) => id !== p.id); // Filter posts they have not this id
+  res.redirect("/posts"); // it will redirect to all the posts (filtered)
+  // res.send("deleted");
+  // console.log(posts);
 })
 
 app.listen(port, () => {
